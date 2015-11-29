@@ -3,6 +3,7 @@
 //
 
 #include <string.h>
+#include <iostream>
 #include "Animal.h"
 
 Animal::Animal() {
@@ -22,5 +23,6 @@ string Animal::GetGene() {
 }
 
 
-
-
+string Animal::ToString() {
+    return GetGene();
+}

@@ -2,8 +2,7 @@
 // Created by jackkell on 11/21/15.
 //
 
-#ifndef TESTPROJECT_ANIMAL_H
-#define TESTPROJECT_ANIMAL_H
+#pragma once
 
 #include <string>
 
@@ -19,7 +18,5 @@ public:
     Animal(string genes);
     ~Animal();
     string GetGene();
+    string ToString();
 };
-
-
-#endif //TESTPROJECT_ANIMAL_H
