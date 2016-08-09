@@ -1,28 +1,16 @@
 //
-// Created by jackkell on 11/21/15.
+// Created by Owner on 8/7/2016.
 //
 
-#include <string.h>
-#include <iostream>
 #include "Animal.h"
 
-Animal::Animal() {
-    this->genes = "";
-    this->fitnessScore = 0;
+Animal::Animal(string dna, int fitnessValue) {
+    this->dna = dna;
+    this->fitnessValue = fitnessValue;
 }
 
-Animal::~Animal() { };
-
-Animal::Animal(string genes) {
-    this->genes = genes;
-    this->fitnessScore = 0;
-}
-
-string Animal::GetGene() {
-    return genes;
-}
+Animal::~Animal() {}
 
 
-string Animal::ToString() {
-    return GetGene();
-}
+
+

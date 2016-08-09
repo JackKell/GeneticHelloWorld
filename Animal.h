@@ -1,22 +1,18 @@
-//
-// Created by jackkell on 11/21/15.
-//
-
-#pragma once
-
 #include <string>
 
 using std::string;
 
 class Animal {
-private:
-    string genes;
-
 public:
-    int fitnessScore;
-    Animal();
-    Animal(string genes);
+    string dna;
+    int fitnessValue;
+
+    Animal(string dna = "", int fitnessValue = 0);
     ~Animal();
-    string GetGene();
-    string ToString();
 };
+
+inline bool operator< (const Animal& lhs, const Animal& rhs){
+    return lhs.fitnessValue < rhs.fitnessValue;
+}
+
+
