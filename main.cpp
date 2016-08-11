@@ -7,6 +7,7 @@
 #include <array>
 
 #include "Animal.h"
+#include "Cannon.h"
 
 using std::string;
 using std::cout;
@@ -137,6 +138,45 @@ void secondSim() {
 int main() {
     srand((unsigned int) (int)time(0));
     //firstSim();
-    secondSim();
+    //secondSim();
+    double d = 0.3041;
+    double L = 4.8666;
+    double powderWeight = 1.25;
+    double ballWeight = 6;
+    Cannon cannon = Cannon(d, L, powderWeight, ballWeight);
+
+    double d_M = 0.09271 ;
+    double L_M = 1.48336;
+    double powderWeight_M = 0.5669905;
+    double ballWeight_M = 2.72155;
+    Cannon cannon_M = Cannon(d_M, L_M, powderWeight_M, ballWeight_M);
+    cout << "Cannon Stats Metric: " << endl;
+    cout << "d: " << d_M << " meters" << endl;
+    cout << "L: " << L_M << " meters" << endl;
+    cout << "powder weight: " << powderWeight_M << " kilograms" << endl;
+    cout << "Muzzle Velocity: " << cannon.getMuzzleVelocity_M() << " m/s" << endl;
+    cout << "Charge Length: " << cannon.getChargeLength() << " meters" << endl << endl;
+
+    cout << "Cannon Stats Imperial: " << endl;
+    cout << "d: " << d << " feet" << endl;
+    cout << "L: " << L << " feet" << endl;
+    cout << "powder weight: " << powderWeight << " pounds" << endl;
+    cout << "Muzzle Velocity: " << cannon.getMuzzleVelocity() << " ft/s" << endl;
+    cout << "Charge Length: " << cannon.getChargeLength_I() << " feet" << endl;
+
+    /*
+     * These are the source values
+     * d = 0.3041 feet
+     * L = 4.8666 feet
+     * powderWeight = 1.25 lbs
+     * ballWeight = 6 lbs
+     * velocity = 1456.15 ft / sec
+     *
+     * d = 0.09271 meters
+     * L = 1.48336 meters
+     * powderWeight = 0.5669905 kgs
+     * ballWeight = 2.72155 kgs
+     * velocity = 443.83452 meters / sec
+     */
 }
 
