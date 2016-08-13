@@ -1,18 +1,17 @@
-#include <string>
-
-using std::string;
+#ifndef GENETICHELLOWORLD_ANIMAL_H
+#define GENETICHELLOWORLD_ANIMAL_H
 
 class Animal {
 public:
-    string dna;
-    int fitnessValue;
-
-    Animal(string dna = "", int fitnessValue = 0);
-    ~Animal();
+    double fitnessValue;
+    virtual void toString();
+    Animal();
 };
 
 inline bool operator< (const Animal& lhs, const Animal& rhs){
     return lhs.fitnessValue < rhs.fitnessValue;
 }
+
+#endif
 
 

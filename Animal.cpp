@@ -1,11 +1,16 @@
+#include <c++/iostream>
 #include "Animal.h"
 
-Animal::Animal(string dna, int fitnessValue) {
-    this->dna = dna;
-    this->fitnessValue = fitnessValue;
+using std::cout;
+using std::endl;
+
+Animal::Animal() {
+    this->fitnessValue = 0;
 }
 
-Animal::~Animal() {}
+void Animal::toString() {
+    cout << fitnessValue << endl;
+}
 
 
 

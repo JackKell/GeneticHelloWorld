@@ -1,33 +1,27 @@
-class Cannon {
-private:
-    // meters
-    double boreWidth;
-    // meters
-    double boreLength;
-    // degrees
-    double angle;
-    // meters
-    double height;
-    // Kg
-    double gunPowderMass;
-    // Kg
-    double ballMass;
+#ifndef GENETICHELLOWORLD_CANNON_H
+#define GENETICHELLOWORLD_CANNON_H
 
+#include "Animal.h"
 
+class Cannon : public Animal{
 public:
-    static const double GUN_POWDER_DENSITY_I;
-    static const double GAS_PRESSURE_RATIO_TO_ATM_I;
-    static const double ATM_I;
+    double boreWidth; // meters
+    double boreLength; // meters
+    double angle; // degrees
+    double platformHeight; // meters
+    double gunPowderMass; // kg
 
-    static const double GUN_POWDER_DENSITY;
-    static const double GAS_PRESSURE_RATIO_TO_ATM;
-    static const double ATM;
+    static const double GUN_POWDER_DENSITY; // kg / m^3
+    static const double CAST_IRON_DENSITY; // kg / m^3
+    static const double R; // metric ratio
+    static const double ATM; // kg / m^2
 
-    Cannon(double boreWidth, double boreLength, double gunPowderMass, double ballMass);
-    ~Cannon();
+    Cannon(double boreWidth, double boreLength, double gunPowderMass, double angle, double height);
 
-    double getChargeLength_I();
-    double getChargeLength();
-    double getMuzzleVelocity();
-    double getMuzzleVelocity_M();
+    double getChargeLength(); // meters
+    double getMuzzleVelocity(); // m/s
+    double getBallMass(); // kg
+    double getStartHeight(); // meters
 };
+
+#endif

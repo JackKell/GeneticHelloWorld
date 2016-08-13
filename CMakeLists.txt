@@ -3,5 +3,5 @@ project(GeneticHelloWorld)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp Animal.cpp Animal.h Cannon.cpp Cannon.h)
+set(SOURCE_FILES main.cpp Animal.cpp Animal.h Cannon.cpp Cannon.h Simulation.h CannonSimulation.h CannonSimulation.cpp)
 add_executable(GeneticHelloWorld ${SOURCE_FILES})
