@@ -20,7 +20,7 @@ using std::sort;
 
 int main() {
     srand((unsigned int) time(NULL));
-    CannonSimulation cannonSimulation = CannonSimulation(10, 5, 300, 10, 3, 100, 90, 10);
+    CannonSimulation cannonSimulation = CannonSimulation(30, 5, 300, 10, 3, 100, 90, 10);
     cannonSimulation.simulate();
 
 

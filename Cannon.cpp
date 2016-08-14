@@ -32,16 +32,16 @@ double Cannon::getMuzzleVelocity() {
     return muzzleVelocity;
 }
 
-Cannon::Cannon(double boreWidth, double boreLength, double gunPowderMass, double angle, double height) {
+Cannon::Cannon(double boreWidth, double boreLength, double gunPowderMass, double launchAngle, double platformHeight) {
     this->boreWidth = boreWidth;
     this->boreLength = boreLength;
     this->gunPowderMass = gunPowderMass;
-    this->angle = angle;
-    this->platformHeight = height;
+    this->launchAngle = launchAngle;
+    this->platformHeight = platformHeight;
 }
 
 double Cannon::getStartHeight() {
-    double angleRadians = angle * M_PI / 180;
+    double angleRadians = launchAngle * M_PI / 180;
     double cannonToPlatformHeight = sin(angleRadians) * boreLength;
     return cannonToPlatformHeight + platformHeight;
 }

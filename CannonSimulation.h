@@ -18,7 +18,12 @@ private:
     void printPopulation() override;
 
     void mutate(Cannon &cannon) override;
+    double mutateDouble(double value, double precentChange, double maxValue);
+    // TODO: choose a better name for this function
+    double randomDoubleBetweenDataMembers(double value1, double value2);
 
+    // TODO: choose a better name for this function
+    void haveChildren(int numberOfChildren);
 public:
     static const double EARTH_G; // m / s^2
 
@@ -26,6 +31,7 @@ public:
     double getFlightTime(Cannon cannon);
     double getDistanceShot(Cannon cannon);
     double getDistanceToTarget(Cannon cannon);
+
 
     double maxBoreLength; // meters
     double maxBoreWidth; // meters

@@ -21,16 +21,39 @@ using std::string;
 
 const double CannonSimulation::EARTH_G = 9.807; // m / s^2
 
+CannonSimulation::CannonSimulation(int maxPopulation, double mutationChance, double targetDistance,
+                                   double maxBoreLength, double maxBoreWidth, double maxGunPowderMass,
+                                   double maxAngle, double maxPlatformHeight)
+        : Simulation(maxPopulation, mutationChance) {
+    this->maxBoreLength = maxBoreLength;
+    this->maxBoreWidth = maxBoreWidth;
+    this->maxGunPowderMass = maxGunPowderMass;
+    this->maxAngle = maxAngle;
+    this->maxPlatformHeight = maxPlatformHeight;
+    this->targetDistance = targetDistance;
+}
+
+double CannonSimulation::randomDoubleBetweenDataMembers(double value1, double value2) {
+    double newValue = 0;
+    if (value1 > value2) {
+        newValue = randomDouble(value1, value2);
+    } else {
+        newValue = randomDouble(value2, value1);
+    }
+    return newValue;
+}
+
 Cannon CannonSimulation::breed(Cannon cannon1, Cannon cannon2) {
-    double averageBoreWidth = (cannon1.boreWidth + cannon2.boreWidth) / 2;
-    double averageBoreLength = (cannon1.boreLength + cannon2.boreLength) / 2;
-    double averageAngle = (cannon1.angle + cannon2.angle) / 2;
-    double averagePlatformHeight = (cannon1.platformHeight + cannon2.platformHeight) / 2;
-    double averageGunPowderMass = (cannon1.gunPowderMass + cannon2.gunPowderMass) / 2;
-    Cannon newCannon = Cannon(averageBoreWidth, averageBoreLength, averageGunPowderMass, averageAngle, averagePlatformHeight);
+    double boreWidth = randomDoubleBetweenDataMembers(cannon1.boreWidth, cannon2.boreWidth);
+    double boreLength = randomDoubleBetweenDataMembers(cannon1.boreLength, cannon2.boreLength);
+    double angle = randomDoubleBetweenDataMembers(cannon1.launchAngle, cannon2.launchAngle);
+    double platformHeight = randomDoubleBetweenDataMembers(cannon1.platformHeight, cannon2.platformHeight);
+    double gunPowderMass = randomDoubleBetweenDataMembers(cannon1.gunPowderMass, cannon2.gunPowderMass);
+    Cannon newCannon = Cannon(boreWidth, boreLength, gunPowderMass, angle, platformHeight);
     if ((rand() % 100) < mutationChance) {
         mutate(newCannon);
     }
+    return newCannon;
 }
 
 void CannonSimulation::fitnessTest(Cannon &cannon) {
@@ -76,7 +99,7 @@ void CannonSimulation::printPopulation() {
              << cannon.boreWidth << separator
              << cannon.gunPowderMass << separator
              << cannon.platformHeight << separator
-             << cannon.angle << separator
+             << cannon.launchAngle << separator
              << cannon.getChargeLength() << separator
              << cannon.getMuzzleVelocity() << separator
              << getDistanceShot(cannon) << separator
@@ -87,22 +110,17 @@ void CannonSimulation::printPopulation() {
 
 void CannonSimulation::simulate() {
     generateRandomPopulation();
-    sort(population.begin(), population.end());
-    printPopulation();
-    generation++;
+    int totalGenerations = 10000;
+    while (generation <= totalGenerations) {
+        sort(population.begin(), population.end());
+        if (generation % 1000 == 0) {
+            printPopulation();
+        }
 
-}
-
-CannonSimulation::CannonSimulation(int maxPopulation, double mutationChance, double targetDistance,
-                                   double maxBoreLength, double maxBoreWidth, double maxGunPowderMass,
-                                   double maxAngle, double maxPlatformHeight)
-        : Simulation(maxPopulation, mutationChance) {
-    this->maxBoreLength = maxBoreLength;
-    this->maxBoreWidth = maxBoreWidth;
-    this->maxGunPowderMass = maxGunPowderMass;
-    this->maxAngle = maxAngle;
-    this->maxPlatformHeight = maxPlatformHeight;
-    this->targetDistance = targetDistance;
+        haveChildren(2);
+        trimPopulation();
+        generation++;
+    }
 }
 
 Cannon CannonSimulation::createRandomIndividual() {
@@ -123,7 +141,7 @@ double CannonSimulation::getMaximumHeight(Cannon cannon) {
 
 double CannonSimulation::getFlightTime(Cannon cannon) {
     double muzzleVelocity = cannon.getMuzzleVelocity();
-    double angleRadians = cannon.angle * M_PI / 180;
+    double angleRadians = cannon.launchAngle * M_PI / 180;
     double flightTime = getDistanceShot(cannon) / (muzzleVelocity * cos(angleRadians));
     flightTime = isnan(flightTime) ? 0 : flightTime;
     return flightTime;
@@ -132,7 +150,7 @@ double CannonSimulation::getFlightTime(Cannon cannon) {
 double CannonSimulation::getDistanceShot(Cannon cannon) {
     // TODO: add wind resistance to calculations
     double muzzleVelocity = cannon.getMuzzleVelocity();
-    double angleRadians = cannon.angle * M_PI / 180;
+    double angleRadians = cannon.launchAngle * M_PI / 180;
     double startHeight = cannon.getStartHeight();
     double distance = ((muzzleVelocity * cos(angleRadians)) / EARTH_G) * (muzzleVelocity * sin(angleRadians) + sqrt((muzzleVelocity * sin(angleRadians)) + 2 * EARTH_G * startHeight));
     return distance;
@@ -144,8 +162,51 @@ double CannonSimulation::getDistanceToTarget(Cannon cannon) {
     return distanceToTarget;
 }
 
-void CannonSimulation::mutate(Cannon &cannon) {
+double CannonSimulation::mutateDouble(double value, double precentChange, double maxValue) {
+    double newValue = value;
+    newValue = randomDouble((1 + precentChange) * value, (1 - precentChange) * value);
+    if (newValue > maxValue) {
+        newValue = maxValue;
+    }
+    return newValue;
+}
 
+void CannonSimulation::mutate(Cannon &cannon) {
+    int randNum = rand() % 5;
+    switch (randNum) {
+        case 0:
+            cannon.boreWidth = mutateDouble(cannon.boreWidth, 0.2, maxBoreWidth);
+            break;
+        case 1:
+            cannon.boreLength = mutateDouble(cannon.boreLength, 0.2, maxBoreLength);
+            break;
+        case 2:
+            cannon.gunPowderMass = mutateDouble(cannon.gunPowderMass, 0.2, maxGunPowderMass);
+            break;
+        case 3:
+            cannon.launchAngle = mutateDouble(cannon.launchAngle, 0.2, maxAngle);
+            break;
+        case 4:
+            cannon.platformHeight = mutateDouble(cannon.platformHeight, 0.2, maxPlatformHeight);
+            break;
+        default:
+            cout << "There is a big problem! :(" << endl;
+    }
+}
+
+void CannonSimulation::haveChildren(int numberOfChildren) {
+    for (int i = 0; i < numberOfChildren; i++) {
+        int index1 = rand() % maxPopulation;
+        int index2 = rand() % maxPopulation;
+        while (index1 == index2) {
+            index2 = rand() % maxPopulation;
+        }
+        Cannon cannon1 = population.at((unsigned long long int) index1);
+        Cannon cannon2 = population.at((unsigned long long int) index2);
+        Cannon newCannon = breed(cannon1, cannon2);
+        fitnessTest(newCannon);
+        population.push_back(newCannon);
+    }
 }
 
 #pragma clang diagnostic pop

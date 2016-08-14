@@ -4,8 +4,10 @@
 #include "Animal.h"
 #include <vector>
 #include <c++/ctime>
+#include <algorithm>
 
 using std::vector;
+using std::sort;
 
 template <class T> class Simulation {
 protected:
@@ -14,8 +16,9 @@ protected:
     int maxPopulation;
     double mutationChance;
 
-    double randomDouble(double maxValue) {
-        return ((((double)rand()*(maxValue) / RAND_MAX) - maxValue) *(-1));
+    double randomDouble(double maxValue, double minValue = 0) {
+        double f = (double)rand() / RAND_MAX;
+        return minValue + f * (maxValue - minValue);
     }
 
     virtual T createRandomIndividual() = 0;
@@ -35,9 +38,20 @@ protected:
 
     virtual void testPopulation() = 0;
 
+    T getRandomIndividual() {
+        return population.at(rand() % population.size());
+    }
+
     virtual void printPopulation() {
         for (T animal : population) {
             animal.toString();
+        }
+    }
+
+    void trimPopulation() {
+        sort(population.begin(), population.end());
+        for (int i = 0; i < (maxPopulation - population.size()); i++) {
+            population.pop_back();
         }
     }
 

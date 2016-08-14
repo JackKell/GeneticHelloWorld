@@ -7,7 +7,7 @@ class Cannon : public Animal{
 public:
     double boreWidth; // meters
     double boreLength; // meters
-    double angle; // degrees
+    double launchAngle; // degrees
     double platformHeight; // meters
     double gunPowderMass; // kg
 
@@ -16,7 +16,7 @@ public:
     static const double R; // metric ratio
     static const double ATM; // kg / m^2
 
-    Cannon(double boreWidth, double boreLength, double gunPowderMass, double angle, double height);
+    Cannon(double boreWidth, double boreLength, double gunPowderMass, double launchAngle, double platformHeight);
 
     double getChargeLength(); // meters
     double getMuzzleVelocity(); // m/s
