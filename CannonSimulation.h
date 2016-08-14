@@ -17,22 +17,28 @@ private:
     void testPopulation() override;
     void printPopulation() override;
 
+    void mutate(Cannon &cannon) override;
+
 public:
     static const double EARTH_G; // m / s^2
 
     double getMaximumHeight(Cannon cannon);
     double getFlightTime(Cannon cannon);
-    double getRange(Cannon cannon);
+    double getDistanceShot(Cannon cannon);
+    double getDistanceToTarget(Cannon cannon);
 
-    double maxBoreLength;
-    double maxBoreWidth;
-    double maxGunPowderMass;
-    double maxAngle;
-    double maxPlatformHeight;
+    double maxBoreLength; // meters
+    double maxBoreWidth; // meters
+    double maxGunPowderMass; // Kg
+    double maxAngle; // degrees
+    double maxPlatformHeight; // meters
+    double targetDistance; // meters
 
 
     void simulate() override;
-    CannonSimulation(int maxPopulation, double mutationChance, double maxBoreLength, double maxBoreWidth, double maxGunPowderMass, double maxAngle, double maxPlatformHeight);
+    CannonSimulation(int maxPopulation, double mutationChance, double targetDistance,
+                     double maxBoreLength, double maxBoreWidth, double maxGunPowderMass,
+                     double maxAngle, double maxPlatformHeight);
 };
 
 #endif

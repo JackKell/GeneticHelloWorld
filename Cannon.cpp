@@ -28,7 +28,7 @@ double Cannon::getMuzzleVelocity() {
                  log(boreLength / getChargeLength())
             )
     );
-    //muzzleVelocity = isnan(muzzleVelocity) ? 0 : muzzleVelocity;
+    muzzleVelocity = isnan(muzzleVelocity) ? 0 : muzzleVelocity;
     return muzzleVelocity;
 }
 

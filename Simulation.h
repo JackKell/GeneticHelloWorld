@@ -15,19 +15,21 @@ protected:
     double mutationChance;
 
     double randomDouble(double maxValue) {
-
         return ((((double)rand()*(maxValue) / RAND_MAX) - maxValue) *(-1));
     }
 
     virtual T createRandomIndividual() = 0;
     virtual T breed(T, T) = 0;
-
+    virtual void mutate(T &animal) = 0;
     virtual void fitnessTest(T &animal) = 0;
+
     virtual bool reachedGoal() = 0;
 
     virtual void generateRandomPopulation() {
         for (int i = 0; i < maxPopulation; ++i) {
-            population.push_back(createRandomIndividual());
+            T individual = createRandomIndividual();
+            fitnessTest(individual);
+            population.push_back(individual);
         }
     }
 
