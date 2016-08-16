@@ -4,12 +4,8 @@
 #define _USE_MATH_DEFINES
 #include <c++/cstdlib>
 #include "CannonSimulation.h"
-#include <math.h>
 #include <c++/iostream>
 #include <c++/iomanip>
-#include <string>
-#include <c++/cmath>
-#include <algorithm>
 
 using std::sort;
 using std::isnan;
@@ -21,9 +17,9 @@ using std::string;
 
 const double CannonSimulation::EARTH_G = 9.807; // m / s^2
 
-CannonSimulation::CannonSimulation(int maxPopulation, double mutationChance, double targetDistance,
-                                   double maxBoreLength, double maxBoreWidth, double maxGunPowderMass,
-                                   double maxAngle, double maxPlatformHeight)
+CannonSimulation::CannonSimulation(int totalGenerations, int maxPopulation, int childrenPerGeneration, double targetDistance,
+                                   double maxBoreLength, double maxBoreWidth, double maxGunPowderMass, double maxAngle,
+                                   double maxPlatformHeight, double mutationChance)
         : Simulation(maxPopulation, mutationChance) {
     this->maxBoreLength = maxBoreLength;
     this->maxBoreWidth = maxBoreWidth;
@@ -31,6 +27,8 @@ CannonSimulation::CannonSimulation(int maxPopulation, double mutationChance, dou
     this->maxAngle = maxAngle;
     this->maxPlatformHeight = maxPlatformHeight;
     this->targetDistance = targetDistance;
+    this->totalGenerations = totalGenerations;
+    this->childrenPerGeneration = childrenPerGeneration;
 }
 
 double CannonSimulation::randomDoubleBetweenDataMembers(double value1, double value2) {
@@ -61,15 +59,16 @@ void CannonSimulation::fitnessTest(Cannon &cannon) {
     double distanceToTarget = getDistanceToTarget(cannon);
     double flightTime = getFlightTime(cannon);
     if (flightTime != 0 && distanceToTarget != targetDistance) {
-        fitnessValue = distanceToTarget + flightTime * 10;
+        fitnessValue = distanceToTarget + flightTime * 70;
     } else {
-        fitnessValue = 5000;
+        fitnessValue = 10000;
     }
     cannon.fitnessValue = fitnessValue;
 }
 
 bool CannonSimulation::reachedGoal() {
-    return false;
+    bool generationsCondition = currentGeneration > totalGenerations;
+    return generationsCondition;
 }
 
 void CannonSimulation::testPopulation() {
@@ -79,7 +78,7 @@ void CannonSimulation::testPopulation() {
 }
 
 void CannonSimulation::printPopulation() {
-    cout << "Generation: " << generation << endl;
+    cout << "Generation: " << currentGeneration << endl;
     string separator = " | ";
     cout << " FV" << separator
          << "BL(m)" << separator
@@ -110,16 +109,15 @@ void CannonSimulation::printPopulation() {
 
 void CannonSimulation::simulate() {
     generateRandomPopulation();
-    int totalGenerations = 10000;
-    while (generation <= totalGenerations) {
+    while (!reachedGoal()) {
         sort(population.begin(), population.end());
-        if (generation % 1000 == 0) {
+        if (currentGeneration % 10 == 0) {
             printPopulation();
         }
 
-        haveChildren(2);
+        haveChildren();
         trimPopulation();
-        generation++;
+        currentGeneration++;
     }
 }
 
@@ -194,8 +192,8 @@ void CannonSimulation::mutate(Cannon &cannon) {
     }
 }
 
-void CannonSimulation::haveChildren(int numberOfChildren) {
-    for (int i = 0; i < numberOfChildren; i++) {
+void CannonSimulation::haveChildren() {
+    for (int i = 0; i < childrenPerGeneration; i++) {
         int index1 = rand() % maxPopulation;
         int index2 = rand() % maxPopulation;
         while (index1 == index2) {

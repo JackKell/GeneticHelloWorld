@@ -6,8 +6,6 @@
 
 class CannonSimulation : public Simulation<Cannon> {
 private:
-
-
     Cannon createRandomIndividual() override;
     Cannon breed(Cannon cannon1, Cannon cannon2) override;
 
@@ -23,15 +21,13 @@ private:
     double randomDoubleBetweenDataMembers(double value1, double value2);
 
     // TODO: choose a better name for this function
-    void haveChildren(int numberOfChildren);
-public:
-    static const double EARTH_G; // m / s^2
+    void haveChildren();
 
+    // TODO: write and implement this function
     double getMaximumHeight(Cannon cannon);
     double getFlightTime(Cannon cannon);
     double getDistanceShot(Cannon cannon);
     double getDistanceToTarget(Cannon cannon);
-
 
     double maxBoreLength; // meters
     double maxBoreWidth; // meters
@@ -40,11 +36,15 @@ public:
     double maxPlatformHeight; // meters
     double targetDistance; // meters
 
+    int totalGenerations;
+    int childrenPerGeneration;
+public:
+    static const double EARTH_G; // m / s^2
 
     void simulate() override;
-    CannonSimulation(int maxPopulation, double mutationChance, double targetDistance,
-                     double maxBoreLength, double maxBoreWidth, double maxGunPowderMass,
-                     double maxAngle, double maxPlatformHeight);
+    CannonSimulation(int totalGenerations, int maxPopulation, int childrenPerGeneration, double targetDistance,
+                         double maxBoreLength, double maxBoreWidth, double maxGunPowderMass, double maxAngle,
+                         double maxPlatformHeight, double mutationChance);
 };
 
 #endif

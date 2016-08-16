@@ -22,13 +22,22 @@ double Cannon::getBallMass() {
 }
 
 double Cannon::getMuzzleVelocity() {
-    double muzzleVelocity = (
-            sqrt(2 * R * ATM / GUN_POWDER_DENSITY) *
-            sqrt(gunPowderMass / (getBallMass() + gunPowderMass / 3) *
-                 log(boreLength / getChargeLength())
-            )
-    );
-    muzzleVelocity = isnan(muzzleVelocity) ? 0 : muzzleVelocity;
+
+    double muzzleVelocity = 0;
+    double chargeLength = getChargeLength();
+
+    if (chargeLength + boreWidth > boreLength) {
+        muzzleVelocity = 0;
+    } else {
+        muzzleVelocity = (
+                sqrt(2 * R * ATM / GUN_POWDER_DENSITY) *
+                sqrt(gunPowderMass / (getBallMass() + gunPowderMass / 3) *
+                     log(boreLength / getChargeLength())
+                )
+        );
+        muzzleVelocity = isnan(muzzleVelocity) ? 0 : muzzleVelocity;
+    }
+
     return muzzleVelocity;
 }
 
@@ -45,5 +54,24 @@ double Cannon::getStartHeight() {
     double cannonToPlatformHeight = sin(angleRadians) * boreLength;
     return cannonToPlatformHeight + platformHeight;
 }
+
+/*
+     * The below values should be used to check if the cannons are working properly
+     * under normal earth gravity at sea level air pressure
+     *
+     * These are the source values
+     * d = 0.3041 feet
+     * L = 4.8666 feet
+     * powderWeight = 1.25 lbs
+     * ballWeight = 6 lbs
+     * velocity = 1456.15 ft / sec
+     *
+     * These are the values converted to metric
+     * d = 0.09271 meters
+     * L = 1.48336 meters
+     * powderWeight = 0.5669905 kgs
+     * ballWeight = 2.72155 kgs
+     * velocity = 443.83452 meters / sec
+     */
 
 #pragma clang diagnostic pop

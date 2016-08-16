@@ -12,7 +12,7 @@ using std::sort;
 template <class T> class Simulation {
 protected:
     vector<T> population;
-    int generation;
+    int currentGeneration;
     int maxPopulation;
     double mutationChance;
 
@@ -58,8 +58,8 @@ protected:
 public:
     virtual void simulate() = 0;
 
-    int getGeneration() {
-        return generation;
+    int getCurrentGeneration() {
+        return currentGeneration;
     }
 
     int getMaxPopulation() {
@@ -71,7 +71,7 @@ public:
     }
 
     Simulation(int maxPopulation, double mutationChance) {
-        this->generation = 0;
+        this->currentGeneration = 0;
         this->maxPopulation = maxPopulation;
         this->mutationChance = mutationChance;
     }

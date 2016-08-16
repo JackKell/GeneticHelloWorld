@@ -20,33 +20,23 @@ using std::sort;
 
 int main() {
     srand((unsigned int) time(NULL));
-    CannonSimulation cannonSimulation = CannonSimulation(30, 5, 300, 10, 3, 100, 90, 10);
+    int maxPopulation = 12; // the number of individuals in each generation
+    double mutationChance = 6; // percentage
+    int totalGenerations = 500; // number of generations to run simulation
+    int childrenPerGen = 3; // number of children born every generation
+
+    double targetDistance = 457.2; // meters
+
+    double maxBoreLength = 1.524; // meters
+    double maxBoreWidth = 0.3048; // meters
+    double maxGunPowderMass = 1.36078; // kilograms
+    double maxAngle = 90; // degrees
+    double maxPlatformHeight = 3.048; // meters
+
+    CannonSimulation cannonSimulation = CannonSimulation(totalGenerations, maxPopulation, childrenPerGen,
+                                                         targetDistance, maxBoreLength, maxBoreWidth, maxGunPowderMass,
+                                                         maxAngle, maxPlatformHeight, mutationChance);
     cannonSimulation.simulate();
-
-
-//    Cannon cannon = Cannon(0.09271, 1.48336, 0.5669905, 2.72155);
-//    cout << "Cannon Stats Metric: " << endl;
-//    cout << "d: " << cannon.boreWidth << " meters" << endl;
-//    cout << "L: " << cannon.boreLength << " meters" << endl;
-//    cout << "powder weight: " << cannon.gunPowderMass << " kilograms" << endl;
-//    cout << "ball weight: " << cannon.ballMass << " kilograms" << endl;
-//    cout << "Muzzle Velocity: " << cannon.getMuzzleVelocity() << " m/s" << endl;
-//    cout << "Charge Length: " << cannon.getChargeLength() << " meters" << endl << endl;
-
-    /*
-     * These are the source values
-     * d = 0.3041 feet
-     * L = 4.8666 feet
-     * powderWeight = 1.25 lbs
-     * ballWeight = 6 lbs
-     * velocity = 1456.15 ft / sec
-     *
-     * d = 0.09271 meters
-     * L = 1.48336 meters
-     * powderWeight = 0.5669905 kgs
-     * ballWeight = 2.72155 kgs
-     * velocity = 443.83452 meters / sec
-     */
 }
 
 
@@ -103,10 +93,10 @@ int main() {
 //    string source = generateRandomString(target.length());
 //
 //    int fitnessValue = fitnessTest(source, target);
-//    int generation = 0;
+//    int currentGeneration = 0;
 //
 //    cout << "Target: " << target << endl;
-//    cout << "Gen: " << generation << " | " << "Value: " << fitnessValue << " | " << source << endl;
+//    cout << "Gen: " << currentGeneration << " | " << "Value: " << fitnessValue << " | " << source << endl;
 //    int totalIterations = 0;
 //    int generationalIteration = 0;
 //    while (fitnessValue != 0) {
@@ -115,9 +105,9 @@ int main() {
 //        if (fitnessValue > mutatedFitnessValue) {
 //            source = mutatedSource;
 //            fitnessValue = mutatedFitnessValue;
-//            generation++;
+//            currentGeneration++;
 //            generationalIteration++;
-//            cout << "Gen: " << generation << " | " << "Value: " << fitnessValue << " | " << source << endl;
+//            cout << "Gen: " << currentGeneration << " | " << "Value: " << fitnessValue << " | " << source << endl;
 //            cout << "\t- Taking " << generationalIteration << " generational iterations" << endl;
 //            generationalIteration = 0;
 //        } else {
@@ -135,15 +125,15 @@ int main() {
 //    int childrenPerGeneration = 5;
 //    int DnaLength = (int) target.length();
 //    vector<Animal> animals;
-//    int generation = 0;
-//    // Create generation 0
+//    int currentGeneration = 0;
+//    // Create currentGeneration 0
 //    for (int i = 0; Population > i; i++) {
 //        string dna = generateRandomString(DnaLength);
 //        Animal newAnimal = Animal(dna, fitnessTest(dna, target));
 //        animals.push_back(newAnimal);
 //    }
 //    sort(animals.begin(), animals.end());
-//    cout << "Generation: " << generation << endl;
+//    cout << "Generation: " << currentGeneration << endl;
 //    printAnimals(animals);
 //    while (animals.front().fitnessValue != 0) {
 //        for (int i = 0; i < childrenPerGeneration; i++) {
@@ -155,13 +145,13 @@ int main() {
 //        for (int i = 0; i < childrenPerGeneration; i++) {
 //            animals.pop_back();
 //        }
-//        generation++;
-//        if (generation % 500 == 0) {
-//            cout << "Generation: " << generation << endl;
+//        currentGeneration++;
+//        if (currentGeneration % 500 == 0) {
+//            cout << "Generation: " << currentGeneration << endl;
 //            printAnimals(animals);
 //        }
 //    }
-//    cout << "Generation: " << generation << endl;
+//    cout << "Generation: " << currentGeneration << endl;
 //    printAnimals(animals);
 //
 //}
