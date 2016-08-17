@@ -1,27 +1,17 @@
-#include <iostream>
-#include <cmath>
-#include <vector>
-#include <ctime>
-#include <algorithm>
-#include <functional>
-
-#include "Cannon.h"
 #include "CannonSimulation.h"
-
-using std::string;
-using std::cout;
-using std::abs;
-using std::pow;
-using std::endl;
-using std::vector;
-using std::sort;
+#include <time.h>
 
 int main() {
+    // sets the random seed
     srand((unsigned int) time(NULL));
-    int maxPopulation = 500; // the number of individuals in each generation
-    double mutationChance = 6; // percentage
-    int totalGenerations = 3000; // number of generations to run simulation
-    int childrenPerGen = 12; // number of children born every generation
+    // number of individuals in each generation
+    int maxPopulation = 100;
+    // percentage chance that a child will be mutated between generations
+    double mutationChance = 6;
+    // number of generations to run the simulation
+    int totalGenerations = 1000;
+    // number of children born every generation
+    int childrenPerGen = 12;
 
     double targetDistance = 457.2; // meters
 
@@ -34,6 +24,7 @@ int main() {
     CannonSimulation cannonSimulation = CannonSimulation(totalGenerations, maxPopulation, childrenPerGen,
                                                          targetDistance, maxBoreLength, maxBoreWidth, maxGunPowderMass,
                                                          maxAngle, maxPlatformHeight, mutationChance, Gravity::EARTH);
+    // run the simulation
     cannonSimulation.simulate();
 }
 
