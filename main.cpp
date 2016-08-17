@@ -1,5 +1,7 @@
-#include "CannonSimulation.h"
 #include <time.h>
+
+#include "CannonSimulation.h"
+#include "Gravity.h"
 
 int main() {
     // sets the random seed

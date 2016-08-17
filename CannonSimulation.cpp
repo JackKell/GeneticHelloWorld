@@ -3,19 +3,16 @@
 
 #define _USE_MATH_DEFINES
 #include <cstdlib>
-#include "CannonSimulation.h"
 #include <iostream>
 #include <iomanip>
+#include "CannonSimulation.h"
 
 using std::sort;
 using std::isnan;
 using std::rand;
 using std::cout;
 using std::endl;
-using std::setw;
 using std::string;
-
-const double CannonSimulation::EARTH_G = 9.807; // m / s^2
 
 CannonSimulation::CannonSimulation(int totalGenerations, int maxPopulation, int childrenPerGeneration, double targetDistance,
                                    double maxBoreLength, double maxBoreWidth, double maxGunPowderMass, double maxAngle,
@@ -29,6 +26,7 @@ CannonSimulation::CannonSimulation(int totalGenerations, int maxPopulation, int 
     this->targetDistance = targetDistance;
     this->totalGenerations = totalGenerations;
     this->childrenPerGeneration = childrenPerGeneration;
+    this->gravity = gravity;
 }
 
 double CannonSimulation::randomDoubleBetweenDataMembers(double value1, double value2) {
@@ -150,7 +148,7 @@ double CannonSimulation::getDistanceShot(Cannon cannon) {
     double muzzleVelocity = cannon.getMuzzleVelocity();
     double angleRadians = cannon.launchAngle * M_PI / 180;
     double startHeight = cannon.getStartHeight();
-    double distance = ((muzzleVelocity * cos(angleRadians)) / EARTH_G) * (muzzleVelocity * sin(angleRadians) + sqrt((muzzleVelocity * sin(angleRadians)) + 2 * EARTH_G * startHeight));
+    double distance = ((muzzleVelocity * cos(angleRadians)) / gravity) * (muzzleVelocity * sin(angleRadians) + sqrt((muzzleVelocity * sin(angleRadians)) + 2 * gravity * startHeight));
     return distance;
 }
 
@@ -160,9 +158,9 @@ double CannonSimulation::getDistanceToTarget(Cannon cannon) {
     return distanceToTarget;
 }
 
-double CannonSimulation::mutateDouble(double value, double precentChange, double maxValue) {
+double CannonSimulation::mutateDouble(double value, double percentageChance, double maxValue) {
     double newValue = 0;
-    newValue = randomDouble((1 + precentChange) * value, (1 - precentChange) * value);
+    newValue = randomDouble((1 + percentageChance) * value, (1 - percentageChance) * value);
     if (newValue > maxValue) {
         newValue = maxValue;
     }
