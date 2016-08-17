@@ -4,11 +4,11 @@
 
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include <c++/cmath>
+#include <cmath>
 
 using std::isnan;
 
-const double Cannon::GUN_POWDER_DENSITY =  881.071383;
+const double Cannon::GUN_POWDER_DENSITY = 881.071383;
 const double Cannon::CAST_IRON_DENSITY = 6800;
 const double Cannon::R = 56496.1;
 const double Cannon::ATM = 2872.310354;
@@ -22,7 +22,6 @@ double Cannon::getBallMass() {
 }
 
 double Cannon::getMuzzleVelocity() {
-
     double muzzleVelocity = 0;
     double chargeLength = getChargeLength();
 
@@ -50,8 +49,8 @@ Cannon::Cannon(double boreWidth, double boreLength, double gunPowderMass, double
 }
 
 double Cannon::getStartHeight() {
-    double angleRadians = launchAngle * M_PI / 180;
-    double cannonToPlatformHeight = sin(angleRadians) * boreLength;
+    const double angleRadians = launchAngle * M_PI / 180;
+    const double cannonToPlatformHeight = sin(angleRadians) * boreLength;
     return cannonToPlatformHeight + platformHeight;
 }
 

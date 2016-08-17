@@ -1,12 +1,10 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <c++/ctime>
+#include <ctime>
 #include <algorithm>
 #include <functional>
-#include <array>
 
-#include "Animal.h"
 #include "Cannon.h"
 #include "CannonSimulation.h"
 
@@ -20,10 +18,10 @@ using std::sort;
 
 int main() {
     srand((unsigned int) time(NULL));
-    int maxPopulation = 12; // the number of individuals in each generation
+    int maxPopulation = 500; // the number of individuals in each generation
     double mutationChance = 6; // percentage
-    int totalGenerations = 500; // number of generations to run simulation
-    int childrenPerGen = 3; // number of children born every generation
+    int totalGenerations = 3000; // number of generations to run simulation
+    int childrenPerGen = 12; // number of children born every generation
 
     double targetDistance = 457.2; // meters
 
@@ -35,7 +33,7 @@ int main() {
 
     CannonSimulation cannonSimulation = CannonSimulation(totalGenerations, maxPopulation, childrenPerGen,
                                                          targetDistance, maxBoreLength, maxBoreWidth, maxGunPowderMass,
-                                                         maxAngle, maxPlatformHeight, mutationChance);
+                                                         maxAngle, maxPlatformHeight, mutationChance, Gravity::EARTH);
     cannonSimulation.simulate();
 }
 

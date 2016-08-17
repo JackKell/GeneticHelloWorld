@@ -2,10 +2,10 @@
 #pragma ide diagnostic ignored "OCUnusedMacroInspection"
 
 #define _USE_MATH_DEFINES
-#include <c++/cstdlib>
+#include <cstdlib>
 #include "CannonSimulation.h"
-#include <c++/iostream>
-#include <c++/iomanip>
+#include <iostream>
+#include <iomanip>
 
 using std::sort;
 using std::isnan;
@@ -19,7 +19,7 @@ const double CannonSimulation::EARTH_G = 9.807; // m / s^2
 
 CannonSimulation::CannonSimulation(int totalGenerations, int maxPopulation, int childrenPerGeneration, double targetDistance,
                                    double maxBoreLength, double maxBoreWidth, double maxGunPowderMass, double maxAngle,
-                                   double maxPlatformHeight, double mutationChance)
+                                   double maxPlatformHeight, double mutationChance, double gravity)
         : Simulation(maxPopulation, mutationChance) {
     this->maxBoreLength = maxBoreLength;
     this->maxBoreWidth = maxBoreWidth;
@@ -161,7 +161,7 @@ double CannonSimulation::getDistanceToTarget(Cannon cannon) {
 }
 
 double CannonSimulation::mutateDouble(double value, double precentChange, double maxValue) {
-    double newValue = value;
+    double newValue = 0;
     newValue = randomDouble((1 + precentChange) * value, (1 - precentChange) * value);
     if (newValue > maxValue) {
         newValue = maxValue;

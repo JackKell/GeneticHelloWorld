@@ -1,9 +1,6 @@
-#ifndef GENETICHELLOWORLD_SIMULATION_H
-#define GENETICHELLOWORLD_SIMULATION_H
+#pragma once
 
-#include "Animal.h"
 #include <vector>
-#include <c++/ctime>
 #include <algorithm>
 
 using std::vector;
@@ -23,8 +20,8 @@ protected:
 
     virtual T createRandomIndividual() = 0;
     virtual T breed(T, T) = 0;
-    virtual void mutate(T &animal) = 0;
-    virtual void fitnessTest(T &animal) = 0;
+    virtual void mutate(T &) = 0;
+    virtual void fitnessTest(T &) = 0;
 
     virtual bool reachedGoal() = 0;
 
@@ -48,7 +45,7 @@ protected:
         }
     }
 
-    void trimPopulation() {
+    virtual void trimPopulation() {
         sort(population.begin(), population.end());
         for (int i = 0; i < (maxPopulation - population.size()); i++) {
             population.pop_back();
@@ -76,5 +73,3 @@ public:
         this->mutationChance = mutationChance;
     }
 };
-
-#endif

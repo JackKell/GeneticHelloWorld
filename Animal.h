@@ -1,5 +1,4 @@
-#ifndef GENETICHELLOWORLD_ANIMAL_H
-#define GENETICHELLOWORLD_ANIMAL_H
+#pragma once
 
 class Animal {
 public:
@@ -11,7 +10,4 @@ public:
 inline bool operator< (const Animal& lhs, const Animal& rhs){
     return lhs.fitnessValue < rhs.fitnessValue;
 }
-
-#endif
-
 

@@ -1,5 +1,4 @@
-#ifndef GENETICHELLOWORLD_CANNON_H
-#define GENETICHELLOWORLD_CANNON_H
+#pragma once
 
 #include "Animal.h"
 
@@ -23,5 +22,3 @@ public:
     double getBallMass(); // kg
     double getStartHeight(); // meters
 };
-
-#endif
