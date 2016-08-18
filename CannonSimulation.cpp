@@ -8,7 +8,6 @@
 #include <cmath>
 #include "CannonSimulation.h"
 
-using std::sort;
 using std::isnan;
 using std::rand;
 using std::cout;
@@ -19,7 +18,7 @@ using std::abs;
 CannonSimulation::CannonSimulation(int totalGenerations, int maxPopulation, int childrenPerGeneration, double targetDistance,
                                    double maxBoreLength, double maxBoreWidth, double maxGunPowderMass, double maxAngle,
                                    double maxPlatformHeight, double mutationChance, double gravity, int printEveryNthGeneration)
-        : Simulation(maxPopulation, mutationChance, printEveryNthGeneration) {
+        : Simulation(maxPopulation, childrenPerGeneration, mutationChance, printEveryNthGeneration) {
     this->maxBoreLength = maxBoreLength;
     this->maxBoreWidth = maxBoreWidth;
     this->maxGunPowderMass = maxGunPowderMass;
@@ -27,7 +26,6 @@ CannonSimulation::CannonSimulation(int totalGenerations, int maxPopulation, int 
     this->maxPlatformHeight = maxPlatformHeight;
     this->targetDistance = targetDistance;
     this->totalGenerations = totalGenerations;
-    this->childrenPerGeneration = childrenPerGeneration;
     this->gravity = gravity;
 }
 
@@ -96,7 +94,7 @@ void CannonSimulation::printPopulation() {
 void CannonSimulation::simulate() {
     generateRandomPopulation();
     while (!reachedGoal()) {
-        sort(population.begin(), population.end());
+        sortPopulation();
         if (currentGeneration % printEveryNthGeneration == 0) {
             printPopulation();
         }
@@ -164,15 +162,6 @@ void CannonSimulation::mutate(Cannon &cannon) {
             break;
         default:
             cout << "There is a big problem! :(" << endl;
-    }
-}
-
-void CannonSimulation::addChildrenToPopulation() {
-    for (int i = 0; i < childrenPerGeneration; i++) {
-        const Cannon cannon1 = getRandomIndividual();
-        const Cannon cannon2 = getRandomIndividual();
-        Cannon newCannon = breed(cannon1, cannon2);
-        population.push_back(newCannon);
     }
 }
 

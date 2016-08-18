@@ -14,7 +14,6 @@ private:
     double targetDistance; // meters
 
     int totalGenerations;
-    int childrenPerGeneration;
 
     double gravity;
 
@@ -25,7 +24,6 @@ private:
     void printPopulation() override;
 
     void mutate(Cannon &cannon) override;
-    void addChildrenToPopulation() override;
 
     // TODO: write and implement this function
     double getMaximumHeight(Cannon cannon);
