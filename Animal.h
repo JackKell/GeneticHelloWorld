@@ -3,7 +3,6 @@
 class Animal {
 public:
     double fitnessValue;
-    virtual void toString();
     Animal();
 };
 
