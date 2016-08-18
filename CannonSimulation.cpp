@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 #include "CannonSimulation.h"
 
 using std::sort;
@@ -13,11 +14,12 @@ using std::rand;
 using std::cout;
 using std::endl;
 using std::string;
+using std::abs;
 
 CannonSimulation::CannonSimulation(int totalGenerations, int maxPopulation, int childrenPerGeneration, double targetDistance,
                                    double maxBoreLength, double maxBoreWidth, double maxGunPowderMass, double maxAngle,
-                                   double maxPlatformHeight, double mutationChance, double gravity)
-        : Simulation(maxPopulation, mutationChance) {
+                                   double maxPlatformHeight, double mutationChance, double gravity, int printEveryNthGeneration)
+        : Simulation(maxPopulation, mutationChance, printEveryNthGeneration) {
     this->maxBoreLength = maxBoreLength;
     this->maxBoreWidth = maxBoreWidth;
     this->maxGunPowderMass = maxGunPowderMass;
@@ -29,43 +31,32 @@ CannonSimulation::CannonSimulation(int totalGenerations, int maxPopulation, int 
     this->gravity = gravity;
 }
 
-double CannonSimulation::randomDoubleBetweenDataMembers(double value1, double value2) {
-    double newValue = 0;
-    if (value1 > value2) {
-        newValue = randomDouble(value1, value2);
-    } else {
-        newValue = randomDouble(value2, value1);
-    }
-    return newValue;
-}
-
 Cannon CannonSimulation::breed(Cannon cannon1, Cannon cannon2) {
-    double boreWidth = randomDoubleBetweenDataMembers(cannon1.boreWidth, cannon2.boreWidth);
-    double boreLength = randomDoubleBetweenDataMembers(cannon1.boreLength, cannon2.boreLength);
-    double angle = randomDoubleBetweenDataMembers(cannon1.launchAngle, cannon2.launchAngle);
-    double platformHeight = randomDoubleBetweenDataMembers(cannon1.platformHeight, cannon2.platformHeight);
-    double gunPowderMass = randomDoubleBetweenDataMembers(cannon1.gunPowderMass, cannon2.gunPowderMass);
+    const double boreWidth = randomDouble(cannon1.boreWidth, cannon2.boreWidth);
+    const double boreLength = randomDouble(cannon1.boreLength, cannon2.boreLength);
+    const double angle = randomDouble(cannon1.launchAngle, cannon2.launchAngle);
+    const double platformHeight = randomDouble(cannon1.platformHeight, cannon2.platformHeight);
+    const double gunPowderMass = randomDouble(cannon1.gunPowderMass, cannon2.gunPowderMass);
     Cannon newCannon = Cannon(boreWidth, boreLength, gunPowderMass, angle, platformHeight);
     if ((rand() % 100) < mutationChance) {
         mutate(newCannon);
     }
+    fitnessTest(newCannon);
     return newCannon;
 }
 
 void CannonSimulation::fitnessTest(Cannon &cannon) {
-    double fitnessValue = 0;
-    double distanceToTarget = getDistanceToTarget(cannon);
-    double flightTime = getFlightTime(cannon);
+    const double distanceToTarget = getDistanceToTarget(cannon);
+    const double flightTime = getFlightTime(cannon);
     if (flightTime != 0 && distanceToTarget != targetDistance) {
-        fitnessValue = distanceToTarget + flightTime * 70;
+        cannon.fitnessValue = distanceToTarget + flightTime * 70;
     } else {
-        fitnessValue = 10000;
+        cannon.fitnessValue = 10000;
     }
-    cannon.fitnessValue = fitnessValue;
 }
 
 bool CannonSimulation::reachedGoal() {
-    bool generationsCondition = currentGeneration > totalGenerations;
+    bool generationsCondition = totalGenerations <= currentGeneration;
     return generationsCondition;
 }
 
@@ -77,20 +68,23 @@ void CannonSimulation::testPopulation() {
 
 void CannonSimulation::printPopulation() {
     cout << "Generation: " << currentGeneration << endl;
-    string separator = " | ";
-    cout << " FV" << separator
-         << "BL(m)" << separator
-         << "BW(m)" << separator
-         << "GPM(Kg)" << separator
-         << "PH(m)" << separator
-         << "A(d)" << separator
-         << "CL(m)" << separator
-         << "MV(m/s)" << separator
-         << "D(m)" << separator
+    const string titleSeparator = "  |  ";
+    const string separator = " | ";
+    cout << "R " << titleSeparator
+         << "FV" << titleSeparator
+         << "BL(m)" << titleSeparator
+         << "BW(m)" << titleSeparator
+         << "GPM(Kg)" << titleSeparator
+         << "PH(m)" << titleSeparator
+         << "A(d)" << titleSeparator
+         << "CL(m)" << titleSeparator
+         << "MV(m/s)" << titleSeparator
+         << "D(m)" << titleSeparator
          << "T(s)"
          << endl;
-    for (Cannon &cannon : population) {
-        cout << "- "
+    for (int i = 0; i < population.size(); i++) {
+        Cannon cannon = population.at((unsigned long long int) i);
+        cout << (i + 1) << " - "
              << cannon.fitnessValue << separator
              << cannon.boreLength << separator
              << cannon.boreWidth << separator
@@ -109,26 +103,26 @@ void CannonSimulation::simulate() {
     generateRandomPopulation();
     while (!reachedGoal()) {
         sort(population.begin(), population.end());
-        if (currentGeneration % 10 == 0) {
+        if (currentGeneration % printEveryNthGeneration == 0) {
             printPopulation();
         }
-
-        haveChildren();
+        addChildrenToPopulation();
         trimPopulation();
         currentGeneration++;
     }
+    printPopulation();
 }
 
 Cannon CannonSimulation::createRandomIndividual() {
-    double boreWidth = randomDouble(maxBoreWidth);
-    double boreLength = randomDouble(maxBoreLength);
-    double gunPowderMass = randomDouble(maxGunPowderMass);
-    double angle = randomDouble(maxAngle);
-    double platformHeight = randomDouble(maxPlatformHeight);
+    const double boreWidth = randomDouble(maxBoreWidth);
+    const double boreLength = randomDouble(maxBoreLength);
+    const double gunPowderMass = randomDouble(maxGunPowderMass);
+    const double angle = randomDouble(maxAngle);
+    const double platformHeight = randomDouble(maxPlatformHeight);
     return Cannon(boreWidth, boreLength, gunPowderMass, angle, platformHeight);
 }
 
-// super helpful
+// super helpful for external balistic calculations
 // https://en.wikipedia.org/wiki/Trajectory_of_a_projectile
 
 double CannonSimulation::getMaximumHeight(Cannon cannon) {
@@ -136,8 +130,8 @@ double CannonSimulation::getMaximumHeight(Cannon cannon) {
 }
 
 double CannonSimulation::getFlightTime(Cannon cannon) {
-    double muzzleVelocity = cannon.getMuzzleVelocity();
-    double angleRadians = cannon.launchAngle * M_PI / 180;
+    const double muzzleVelocity = cannon.getMuzzleVelocity();
+    const double angleRadians = cannon.launchAngle * M_PI / 180;
     double flightTime = getDistanceShot(cannon) / (muzzleVelocity * cos(angleRadians));
     flightTime = isnan(flightTime) ? 0 : flightTime;
     return flightTime;
@@ -145,62 +139,45 @@ double CannonSimulation::getFlightTime(Cannon cannon) {
 
 double CannonSimulation::getDistanceShot(Cannon cannon) {
     // TODO: add wind resistance to calculations
-    double muzzleVelocity = cannon.getMuzzleVelocity();
-    double angleRadians = cannon.launchAngle * M_PI / 180;
-    double startHeight = cannon.getStartHeight();
-    double distance = ((muzzleVelocity * cos(angleRadians)) / gravity) * (muzzleVelocity * sin(angleRadians) + sqrt((muzzleVelocity * sin(angleRadians)) + 2 * gravity * startHeight));
+    const double muzzleVelocity = cannon.getMuzzleVelocity();
+    const double angleRadians = cannon.launchAngle * M_PI / 180;
+    const double startHeight = cannon.getStartHeight();
+    const double distance = ((muzzleVelocity * cos(angleRadians)) / gravity) * (muzzleVelocity * sin(angleRadians) + sqrt((muzzleVelocity * sin(angleRadians)) + 2 * gravity * startHeight));
     return distance;
 }
 
 double CannonSimulation::getDistanceToTarget(Cannon cannon) {
-    double distanceToTarget = targetDistance - getDistanceShot(cannon);
-    distanceToTarget = distanceToTarget < 0 ? distanceToTarget * -1 : distanceToTarget;
-    return distanceToTarget;
-}
-
-double CannonSimulation::mutateDouble(double value, double percentageChance, double maxValue) {
-    double newValue = 0;
-    newValue = randomDouble((1 + percentageChance) * value, (1 - percentageChance) * value);
-    if (newValue > maxValue) {
-        newValue = maxValue;
-    }
-    return newValue;
+    return abs(targetDistance - getDistanceShot(cannon));
 }
 
 void CannonSimulation::mutate(Cannon &cannon) {
     int randNum = rand() % 5;
     switch (randNum) {
         case 0:
-            cannon.boreWidth = mutateDouble(cannon.boreWidth, 0.2, maxBoreWidth);
+            cannon.boreWidth = randomDouble(maxBoreWidth, 0);
             break;
         case 1:
-            cannon.boreLength = mutateDouble(cannon.boreLength, 0.2, maxBoreLength);
+            cannon.boreLength = randomDouble(maxBoreLength, 0);
             break;
         case 2:
-            cannon.gunPowderMass = mutateDouble(cannon.gunPowderMass, 0.2, maxGunPowderMass);
+            cannon.gunPowderMass = randomDouble(maxGunPowderMass, 0);
             break;
         case 3:
-            cannon.launchAngle = mutateDouble(cannon.launchAngle, 0.2, maxAngle);
+            cannon.launchAngle = randomDouble(maxBoreWidth, 0);
             break;
         case 4:
-            cannon.platformHeight = mutateDouble(cannon.platformHeight, 0.2, maxPlatformHeight);
+            cannon.platformHeight = randomDouble(maxPlatformHeight, 0);
             break;
         default:
             cout << "There is a big problem! :(" << endl;
     }
 }
 
-void CannonSimulation::haveChildren() {
+void CannonSimulation::addChildrenToPopulation() {
     for (int i = 0; i < childrenPerGeneration; i++) {
-        int index1 = rand() % maxPopulation;
-        int index2 = rand() % maxPopulation;
-        while (index1 == index2) {
-            index2 = rand() % maxPopulation;
-        }
-        Cannon cannon1 = population.at((unsigned long long int) index1);
-        Cannon cannon2 = population.at((unsigned long long int) index2);
+        const Cannon cannon1 = getRandomIndividual();
+        const Cannon cannon2 = getRandomIndividual();
         Cannon newCannon = breed(cannon1, cannon2);
-        fitnessTest(newCannon);
         population.push_back(newCannon);
     }
 }

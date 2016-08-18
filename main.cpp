@@ -7,25 +7,28 @@ int main() {
     // sets the random seed
     srand((unsigned int) time(NULL));
     // number of individuals in each generation
-    int maxPopulation = 100;
+    const int maxPopulation = 100;
     // percentage chance that a child will be mutated between generations
-    double mutationChance = 6;
+    const double mutationChance = 6;
     // number of generations to run the simulation
-    int totalGenerations = 1000;
+    const int totalGenerations = 10;
+    const int printEveryNthGeneration = 25;
     // number of children born every generation
-    int childrenPerGen = 12;
+    const int childrenPerGen = 12;
 
-    double targetDistance = 457.2; // meters
+    const double targetDistance = 457.2; // meters
 
-    double maxBoreLength = 1.524; // meters
-    double maxBoreWidth = 0.3048; // meters
-    double maxGunPowderMass = 1.36078; // kilograms
-    double maxAngle = 90; // degrees
-    double maxPlatformHeight = 3.048; // meters
+    const double maxBoreLength = 1.524; // meters
+    const double maxBoreWidth = 0.3048; // meters
+    const double maxGunPowderMass = 1.36078; // kilograms
+    const double maxAngle = 90; // degrees
+    const double maxPlatformHeight = 3.048; // meters
+
 
     CannonSimulation cannonSimulation = CannonSimulation(totalGenerations, maxPopulation, childrenPerGen,
                                                          targetDistance, maxBoreLength, maxBoreWidth, maxGunPowderMass,
-                                                         maxAngle, maxPlatformHeight, mutationChance, Gravity::EARTH);
+                                                         maxAngle, maxPlatformHeight, mutationChance, Gravity::EARTH,
+                                                         printEveryNthGeneration);
     // run the simulation
     cannonSimulation.simulate();
 }

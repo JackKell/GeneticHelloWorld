@@ -12,18 +12,15 @@ protected:
     int currentGeneration;
     int maxPopulation;
     double mutationChance;
-
-    double randomDouble(double maxValue, double minValue = 0) {
-        double f = (double)rand() / RAND_MAX;
-        return minValue + f * (maxValue - minValue);
-    }
+    int printEveryNthGeneration;
 
     virtual T createRandomIndividual() = 0;
+    virtual void addChildrenToPopulation() = 0;
     virtual T breed(T, T) = 0;
     virtual void mutate(T &) = 0;
     virtual void fitnessTest(T &) = 0;
-
     virtual bool reachedGoal() = 0;
+    virtual void testPopulation() = 0;
 
     virtual void generateRandomPopulation() {
         for (int i = 0; i < maxPopulation; ++i) {
@@ -32,8 +29,6 @@ protected:
             population.push_back(individual);
         }
     }
-
-    virtual void testPopulation() = 0;
 
     T getRandomIndividual() {
         return population.at(rand() % population.size());
@@ -52,6 +47,11 @@ protected:
         }
     }
 
+    double randomDouble(double maxValue, double minValue = 0) {
+        double f = (double)rand() / RAND_MAX;
+        return minValue + f * (maxValue - minValue);
+    }
+
 public:
     virtual void simulate() = 0;
 
@@ -67,9 +67,10 @@ public:
         return mutationChance;
     }
 
-    Simulation(int maxPopulation, double mutationChance) {
+    Simulation(int maxPopulation, double mutationChance, int printEveryNthGeneration) {
         this->currentGeneration = 0;
         this->maxPopulation = maxPopulation;
         this->mutationChance = mutationChance;
+        this->printEveryNthGeneration = printEveryNthGeneration;
     }
 };
