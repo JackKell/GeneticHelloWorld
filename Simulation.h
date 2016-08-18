@@ -20,6 +20,7 @@ protected:
     virtual void mutate(T &) = 0;
     virtual void fitnessTest(T &) = 0;
     virtual bool reachedGoal() = 0;
+    virtual void printPopulation() = 0;
 
     virtual void generateRandomPopulation() {
         for (int i = 0; i < maxPopulation; ++i) {
@@ -29,14 +30,8 @@ protected:
         }
     }
 
-    T getRandomIndividual() {
+    inline T getRandomIndividual() {
         return population.at(rand() % population.size());
-    }
-
-    virtual void printPopulation() {
-        for (T animal : population) {
-            animal.toString();
-        }
     }
 
     virtual void trimPopulation() {
@@ -46,9 +41,8 @@ protected:
         }
     }
 
-    double randomDouble(double maxValue, double minValue = 0) {
-        double f = (double)rand() / RAND_MAX;
-        return minValue + f * (maxValue - minValue);
+    inline double randomDouble(double maxValue, double minValue = 0) {
+        return minValue + ((double)rand() / RAND_MAX) * (maxValue - minValue);
     }
 
 public:

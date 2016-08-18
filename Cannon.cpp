@@ -3,7 +3,6 @@
 #include "Cannon.h"
 
 #define _USE_MATH_DEFINES
-#include <math.h>
 #include <cmath>
 
 using std::isnan;
@@ -13,17 +12,17 @@ const double Cannon::CAST_IRON_DENSITY = 6800;
 const double Cannon::R = 56496.1;
 const double Cannon::ATM = 2872.310354;
 
-double Cannon::getChargeLength() {
+inline double Cannon::getChargeLength() {
     return gunPowderMass * 4 / (M_PI * boreWidth * boreWidth * GUN_POWDER_DENSITY);
 }
 
-double Cannon::getBallMass() {
+inline double Cannon::getBallMass() {
     return (4/3) * M_PI * CAST_IRON_DENSITY * pow((boreWidth / 2), 3);
 }
 
 double Cannon::getMuzzleVelocity() {
     double muzzleVelocity = 0;
-    double chargeLength = getChargeLength();
+    const double chargeLength = getChargeLength();
 
     if (chargeLength + boreWidth > boreLength) {
         muzzleVelocity = 0;

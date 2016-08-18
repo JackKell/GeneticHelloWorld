@@ -1,7 +1,5 @@
 #include <time.h>
-
 #include "CannonSimulation.h"
-#include "Gravity.h"
 
 int main() {
     // sets the random seed
@@ -11,7 +9,7 @@ int main() {
     // percentage chance that a child will be mutated between generations
     const double mutationChance = 6;
     // number of generations to run the simulation
-    const int totalGenerations = 10;
+    const int totalGenerations = 1000;
     const int printEveryNthGeneration = 25;
     // number of children born every generation
     const int childrenPerGen = 12;
