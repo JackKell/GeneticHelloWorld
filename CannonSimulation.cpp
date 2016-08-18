@@ -6,6 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <cfloat>
 #include "CannonSimulation.h"
 
 using std::isnan;
@@ -49,7 +50,7 @@ void CannonSimulation::fitnessTest(Cannon &cannon) {
     if (flightTime != 0 && distanceToTarget != targetDistance) {
         cannon.fitnessValue = distanceToTarget + flightTime * 70;
     } else {
-        cannon.fitnessValue = 10000;
+        cannon.fitnessValue = DBL_MAX;
     }
 }
 
