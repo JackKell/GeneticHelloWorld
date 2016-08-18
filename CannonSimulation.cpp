@@ -60,12 +60,6 @@ bool CannonSimulation::reachedGoal() {
     return generationsCondition;
 }
 
-void CannonSimulation::testPopulation() {
-    for (Cannon &cannon : population) {
-        fitnessTest(cannon);
-    }
-}
-
 void CannonSimulation::printPopulation() {
     cout << "Generation: " << currentGeneration << endl;
     const string titleSeparator = "  |  ";

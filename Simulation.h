@@ -20,7 +20,6 @@ protected:
     virtual void mutate(T &) = 0;
     virtual void fitnessTest(T &) = 0;
     virtual bool reachedGoal() = 0;
-    virtual void testPopulation() = 0;
 
     virtual void generateRandomPopulation() {
         for (int i = 0; i < maxPopulation; ++i) {

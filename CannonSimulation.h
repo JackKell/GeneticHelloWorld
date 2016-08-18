@@ -22,7 +22,6 @@ private:
     Cannon breed(Cannon cannon1, Cannon cannon2) override;
     void fitnessTest(Cannon &cannon) override;
     bool reachedGoal() override;
-    void testPopulation() override;
     void printPopulation() override;
 
     void mutate(Cannon &cannon) override;
