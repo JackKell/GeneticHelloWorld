@@ -42,6 +42,6 @@ int main() {
     // sets the random seed
     srand((unsigned int) time(NULL));
 
-    cannonTest();
+
 }
 
