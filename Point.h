@@ -16,3 +16,7 @@ public:
     void incrementY(int y = 1);
     void decrementY(int y = 1);
 };
+
+inline bool operator== (const Point& lhs, const Point& rhs){
+    return lhs.getX() == rhs.getX() && lhs.getY() == rhs.getY();
+}

@@ -165,5 +165,4 @@ void CannonSimulation::mutate(Cannon &cannon) {
             cout << "There is a big problem! :(" << endl;
     }
 }
-
 #pragma clang diagnostic pop

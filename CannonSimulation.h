@@ -23,6 +23,8 @@ private:
     bool reachedGoal() override;
     void printPopulation() override;
 
+private:
+
     void mutate(Cannon &cannon) override;
 
     // TODO: write and implement this function

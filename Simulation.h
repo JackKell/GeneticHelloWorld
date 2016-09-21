@@ -27,6 +27,9 @@ protected:
         }
     }
     virtual T breed(T, T) = 0;
+    virtual float testSimilarity(T, T) {
+        return 0;
+    };
     virtual void mutate(T &) = 0;
     virtual void fitnessTest(T &) = 0;
     virtual bool reachedGoal() = 0;

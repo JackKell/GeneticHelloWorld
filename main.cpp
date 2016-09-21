@@ -1,6 +1,8 @@
 #include <time.h>
 #include "CannonSimulation.h"
 #include "LivingStringSimulation.h"
+#include "TurtleBot.h"
+#include "TurtleBotSimulation.h"
 
 void cannonTest() {
     // number of individuals in each generation
@@ -42,6 +44,41 @@ int main() {
     // sets the random seed
     srand((unsigned int) time(NULL));
 
+    // TurtleBotSimulation(int totalGenerations, int childrenPerGeneration, double mutationChance,
+    // int printEveryNthGeneration, int maxPopulation, int brainSize, Direction startDirection,
+    //        TurtleBotMap turtleBotMap, float outOfBoundsPenalty, float goalReward);
 
+    int totalGenerations = 10000;
+    int childrenPerGeneration = 20;
+    double mutationChance = 5;
+    int printEveryNthGeneration = 1000;
+    int maxPopulation = 100;
+    int brainSize = 25;
+    Direction startDirection = UP;
+
+    vector<Point> goals;
+    goals.push_back(Point(0, 3));
+    goals.push_back(Point(1, 4));
+    goals.push_back(Point(1, 0));
+    goals.push_back(Point(3, 0));
+    goals.push_back(Point(4, 2));
+
+    TurtleBotMap turtleBotMap = TurtleBotMap(4, 4, goals, Point(0,0), Point(2,2));
+
+    float outOfBoundsPenalty = 100;
+    float goalReward = 50;
+    float actionCost = 1;
+    float finishOnEndReward = 10;
+    float finishOffEndPenalty = 1000;
+    float outOfActionsPenalty = 1000;
+
+    TurtleBotSimulation turtleBotSimulation = TurtleBotSimulation(totalGenerations, childrenPerGeneration,
+                                                                  mutationChance, printEveryNthGeneration,
+                                                                  maxPopulation, brainSize, startDirection,
+                                                                  turtleBotMap, outOfBoundsPenalty, goalReward,
+                                                                  actionCost, finishOnEndReward, finishOffEndPenalty,
+                                                                  outOfActionsPenalty);
+
+    turtleBotSimulation.simulate();
 }
 

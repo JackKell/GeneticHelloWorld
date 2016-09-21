@@ -56,7 +56,7 @@ void LivingStringSimulation::printPopulation() {
     cout << "Generation: " << currentGeneration << endl;
     cout << "Rank | Fitness Value | DNA" << endl;
     for (int i = 0; i < population.size(); i++) {
-        LivingString currentAnimal = population.at((unsigned long long int) i);
+        LivingString currentAnimal = population.at((unsigned int) i);
         cout << (i + 1) << " | "
              << currentAnimal.fitnessValue << " | "
              << currentAnimal.dna << endl;
