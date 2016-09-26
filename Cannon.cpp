@@ -1,8 +1,5 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedMacroInspection"
 #include "Cannon.h"
 
-#define _USE_MATH_DEFINES
 #include <cmath>
 
 using std::isnan;
@@ -71,5 +68,3 @@ double Cannon::getStartHeight() {
      * ballWeight = 2.72155 kgs
      * velocity = 443.83452 meters / sec
      */
-
-#pragma clang diagnostic pop

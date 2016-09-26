@@ -1,7 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedMacroInspection"
-
-#define _USE_MATH_DEFINES
 #include <cstdlib>
 #include <iostream>
 #include <iomanip>
@@ -165,4 +161,3 @@ void CannonSimulation::mutate(Cannon &cannon) {
             cout << "There is a big problem! :(" << endl;
     }
 }
-#pragma clang diagnostic pop
